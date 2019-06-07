@@ -1,4 +1,5 @@
 #include "CEC_Electrical.h"
+#include <Particle.h>
 
 CEC_Electrical::CEC_Electrical(int address)
 {
@@ -173,7 +174,7 @@ unsigned long CEC_Electrical::Process()
 			_amLastTransmittor = false;
 			break;
 		}
-		
+
 		// Nothing to do until we have a need to transmit
 		// or we detect the falling edge of the start bit
 		break;
@@ -194,9 +195,9 @@ unsigned long CEC_Electrical::Process()
 //DbgPrint("1: %ld %ld\n", difftime, micros());
 			waitTime = ResetState() ? micros() : (unsigned long)-1;
 			break;
-		
+
 		case CEC_RCV_STARTBIT2:
-			// This should be the falling edge of the start bit			
+			// This should be the falling edge of the start bit
 			if (difftime >= 4300 && difftime <= 4700)
 			{
 				// We've fully received the start bit.  Begin receiving
@@ -210,7 +211,7 @@ unsigned long CEC_Electrical::Process()
 //DbgPrint("2: %ld %ld\n", difftime, micros());
 			waitTime = ResetState() ? micros() : (unsigned long)-1;
 			break;
-		
+
 		case CEC_RCV_DATABIT1:
 			// We've received the rising edge of the data bit
 			if (difftime >= 400 && difftime <= 800)
@@ -352,7 +353,7 @@ unsigned long CEC_Electrical::Process()
 			Raise();
 			waitTime = ResetState() ? micros() : (unsigned long)-1;
 			break;
-		
+
 		}
 
 		break;
@@ -442,7 +443,7 @@ unsigned long CEC_Electrical::Process()
 
 			// wait 3700 microsec
 			waitTime = _bitStartTime + 3700;
-			
+
 			// and transition to our next state
 			_secondaryState = CEC_XMIT_STARTBIT1;
 			break;
@@ -495,7 +496,7 @@ unsigned long CEC_Electrical::Process()
 				// We've just finished transmitting the EOM
 				// move on to the ACK
 				_secondaryState = CEC_XMIT_ACK;
-			}			
+			}
 			else
 				_secondaryState = CEC_XMIT_DATABIT2;
 			break;
@@ -561,7 +562,7 @@ unsigned long CEC_Electrical::Process()
 			{
 				// not being acknowledged
 				// normally we retransmit.  But this is NOT the case for <Polling Message> as its
-				// function is basically to 'ping' a logical address in which case we just want 
+				// function is basically to 'ping' a logical address in which case we just want
 				// acknowledgement that it has succeeded or failed
 				if (RemainingTransmitBytes() == 0 &&  TransmitSize() == 1)
 				{
@@ -593,7 +594,7 @@ unsigned long CEC_Electrical::Process()
 			break;
 		}
 	}
-	return waitTime;	
+	return waitTime;
 }
 
 bool CEC_Electrical::ResetState()
@@ -637,7 +638,7 @@ void CEC_Electrical::ResetTransmit(bool retransmit)
 			ResetTransmitBuffer();
 		}
 	}
-	else 
+	else
 	{
 		_xmitretry = 0;
 		if (_amLastTransmittor)

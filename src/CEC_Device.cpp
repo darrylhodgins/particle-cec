@@ -1,5 +1,5 @@
 #include "CEC_Device.h"
-#include <Arduino.h>
+#include <Particle.h>
 
 CEC_Device::CEC_Device(int physicalAddress, int in_line, int out_line)
 : CEC_LogicalDevice(physicalAddress)

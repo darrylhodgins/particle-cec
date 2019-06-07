@@ -1,6 +1,7 @@
 #include "CEC.h"
+#include <Particle.h>
 
-int CEC_LogicalDevice::_validLogicalAddresses[6][5] = 
+int CEC_LogicalDevice::_validLogicalAddresses[6][5] =
 	{	{CLA_TV,					CLA_FREE_USE,			CLA_UNREGISTERED,		CLA_UNREGISTERED,	CLA_UNREGISTERED,	},
 		{CLA_RECORDING_DEVICE_1,	CLA_RECORDING_DEVICE_2,	CLA_RECORDING_DEVICE_3,	CLA_UNREGISTERED,	CLA_UNREGISTERED,	},
 		{CLA_PLAYBACK_DEVICE_1,		CLA_PLAYBACK_DEVICE_2,	CLA_PLAYBACK_DEVICE_3,	CLA_UNREGISTERED,	CLA_UNREGISTERED,	},
@@ -52,7 +53,7 @@ bool CEC_LogicalDevice::ProcessStateMachine(bool* success)
 			buffer[0] = MAKE_ADDRESS(_validLogicalAddresses[_deviceType][_tertiaryState], _validLogicalAddresses[_deviceType][_tertiaryState]);
 			ClearTransmitBuffer();
 			Transmit(buffer, 1);
-			
+
 			_secondaryState = CEC_RCV_POLLING_MESSAGE;
 			wait = true;
 			break;
@@ -151,5 +152,3 @@ void CEC_LogicalDevice::Run()
 	        _waitTime = wait;
 	return;
 }
-
-
